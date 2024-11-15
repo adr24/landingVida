@@ -1,13 +1,15 @@
-<<<<<<< HEAD
+git<<<<<<< HEAD
 # cbsvida
 landing page for humanized opioids addiction treatment with ancestral and modern medicine in La Paz Bolivia
 =======
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
 
 ## Getting Started
 
 First, run the development server:
-
+git remote add origin https://github.com/adr24/landingVida.git
+git branch -M main
+git push -u origin main
 ```bash
 npm run dev
 # or

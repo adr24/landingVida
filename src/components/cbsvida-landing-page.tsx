@@ -1,17 +1,36 @@
 'use client'
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { CardContent, Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import Image from "next/image"
 import Link from "next/link"
 
 export function CbsvidaLandingPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentLanguage, setCurrentLanguage] = useState("EN")
+
+  const languages = [
+    { code: "EN", name: "English" },
+    { code: "ES", name: "Español" },
+    { code: "PT", name: "Português" },
+    { code: "CH", name: "Chinese" },
+    { code: "RS", name: "Russian" },
+  ]
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <header className="px-4 lg:px-6 h-16 flex flex-wrap items-center justify-between border-b border-gray-200">
+      <header className="px-4 lg:px-6 h-16 flex items-center justify-between border-b border-gray-200">
         <Link className="flex items-center justify-center" href="#">
           <Image
             src="/placeholder.svg?height=40&width=40"
@@ -36,41 +55,66 @@ export function CbsvidaLandingPage() {
             Contact
           </Link>
         </nav>
-        <div className="md:hidden">
-          <Button variant="outline" size="icon">
-            <svg
-              className=" h-6 w-6"
-              fill="none"
-              height="24"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line x1="4" x2="20" y1="12" y2="12" />
-              <line x1="4" x2="20" y1="6" y2="6" />
-              <line x1="4" x2="20" y1="18" y2="18" />
-            </svg>
-          </Button>
-        </div>
-        <div className="ml-4 flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            ES
-          </Button>
-          <Button variant="outline" size="sm">
-            EN
-          </Button>
-        </div>
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="md:hidden">
+              <svg
+                className=" h-6 w-6"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line x1="4" x2="20" y1="12" y2="12" />
+                <line x1="4" x2="20" y1="6" y2="6" />
+                <line x1="4" x2="20" y1="18" y2="18" />
+              </svg>
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <nav className="flex flex-col gap-4">
+              <Link className="text-sm font-medium text-stone-600 hover:text-stone-900" href="#approach">
+                Our Approach
+              </Link>
+              <Link className="text-sm font-medium text-stone-600 hover:text-stone-900" href="#programs">
+                Programs
+              </Link>
+              <Link className="text-sm font-medium text-stone-600 hover:text-stone-900" href="#testimonials">
+                Testimonials
+              </Link>
+              <Link className="text-sm font-medium text-stone-600 hover:text-stone-900" href="#contact">
+                Contact
+              </Link>
+            </nav>
+          </SheetContent>
+        </Sheet>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              {currentLanguage}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {languages.map((lang) => (
+              <DropdownMenuItem key={lang.code} onSelect={() => setCurrentLanguage(lang.code)}>
+                {lang.name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-blue-50 to-white">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-stone-800">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-stone-800">
                   Integrated Addiction Treatment
                 </h1>
                 <p className="mx-auto max-w-[700px] text-stone-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -90,10 +134,10 @@ export function CbsvidaLandingPage() {
         </section>
         <section id="approach" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-center mb-8 text-stone-800">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-stone-800">
               Our Integrated Approach
             </h2>
-            <div className="grid gap-6 md:grid-cols-2 items-center">
+            <div className="grid gap-6 lg:grid-cols-2 items-center">
               <Image
                 src="/placeholder.svg?height=400&width=600"
                 alt="Integrated Treatment Approach"
@@ -102,7 +146,7 @@ export function CbsvidaLandingPage() {
                 className="rounded-lg object-cover"
               />
               <div className="space-y-4">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-stone-800">Bridging Two Worlds of Healing</h3>
+                <h3 className="text-2xl font-bold text-stone-800">Bridging Two Worlds of Healing</h3>
                 <p className="text-stone-600">
                   At CBSVida, we combine evidence-based modern medical treatments with respected Andean and Amazonic
                   healing practices. This unique integration offers a comprehensive approach to addiction recovery,
@@ -184,7 +228,7 @@ export function CbsvidaLandingPage() {
         </section>
         <section id="programs" className="w-full py-12 md:py-24 lg:py-32 bg-stone-100">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-center mb-8 text-stone-800">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-stone-800">
               Our Treatment Programs
             </h2>
             <Tabs defaultValue="medical" className="w-full max-w-3xl mx-auto">
@@ -225,14 +269,14 @@ export function CbsvidaLandingPage() {
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-center mb-8 text-stone-800">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-stone-800">
               Our Commitment to You
             </h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 lg:grid-cols-3">
               <Card>
                 <CardContent className="p-6">
                   <svg
-                    className=" h-12 w-12 text-amber-600 mb-4"
+                    className=" h-12 w-12 text-blue-600 mb-4"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -245,7 +289,7 @@ export function CbsvidaLandingPage() {
                   >
                     <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                   </svg>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 text-stone-800">Dignified Care</h3>
+                  <h3 className="text-xl font-bold mb-2 text-stone-800">Dignified Care</h3>
                   <p className="text-stone-600">
                     We treat every individual with respect, compassion, and dignity throughout their recovery journey.
                   </p>
@@ -254,7 +298,7 @@ export function CbsvidaLandingPage() {
               <Card>
                 <CardContent className="p-6">
                   <svg
-                    className=" h-12 w-12 text-amber-600 mb-4"
+                    className=" h-12 w-12 text-blue-600 mb-4"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -270,7 +314,7 @@ export function CbsvidaLandingPage() {
                     <path d="M15.1 15.1 18 18l3-3-2.9-2.9" />
                     <path d="M18 18s-2 2-4 2-3-1-4-2-2-3-2-4 1-3 2-4 3-2 4-2 3 1 4 2 2 3 2 4-1 3-2 4" />
                   </svg>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 text-stone-800">Cultural Integration</h3>
+                  <h3 className="text-xl font-bold mb-2 text-stone-800">Cultural Integration</h3>
                   <p className="text-stone-600">
                     Our approach honors and integrates both modern and traditional healing practices for holistic recovery.
                   </p>
@@ -279,7 +323,7 @@ export function CbsvidaLandingPage() {
               <Card>
                 <CardContent className="p-6">
                   <svg
-                    className=" h-12 w-12 text-amber-600 mb-4"
+                    className=" h-12 w-12 text-blue-600 mb-4"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -295,7 +339,7 @@ export function CbsvidaLandingPage() {
                     <path d="M12 13V7" />
                     <path d="M12 18v-2" />
                   </svg>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 text-stone-800">Evidence-Based</h3>
+                  <h3 className="text-xl font-bold mb-2 text-stone-800">Evidence-Based</h3>
                   <p className="text-stone-600">
                     Our treatments are grounded in scientific research and proven medical practices for safe, effective care.
                   </p>
@@ -306,10 +350,10 @@ export function CbsvidaLandingPage() {
         </section>
         <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-stone-100">
           <div className="container px-4 md:px-6">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-center mb-8 text-stone-800">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-stone-800">
               Recovery Stories
             </h2>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 lg:grid-cols-2">
               <Card>
                 <CardContent className="p-6">
                   <p className="text-stone-600 mb-4">
@@ -335,7 +379,7 @@ export function CbsvidaLandingPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter text-stone-800">Contact Us</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-stone-800">Contact Us</h2>
                 <p className="max-w-[600px] text-stone-600 md:text-xl">
                   Take the first step towards recovery. Reach out to us for more information or to schedule a confidential consultation.
                 </p>
